@@ -6,6 +6,52 @@ import './global.css'
 import styles from './App.module.css'
 import Sidebar from './components/Sidebar/Sidebar.component'
 
+type Post= {
+  id: Number
+  author: {
+    avatarUrl: string
+    name: string
+    role: string
+  },
+  publishedAt: Date
+  post: {
+    content: {
+      type: string
+      content: string
+    }[]
+    
+  }
+}
+const posts: Post[] = [
+  {
+    id: 1,
+    author: {
+      avatarUrl: 'https://github.com/J3anSimas.png',
+      name: 'Jean Simas',
+      role: 'Web Developer'
+    },
+
+    publishedAt: new Date(),
+
+    post: {
+      content: [
+        {
+          type: 'paragraph',
+          content: 'Fala galeraa 👋'
+        },
+        {
+          type: 'paragraph',
+          content: 'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'
+        },
+        {
+          type: 'link',
+          content: 'https://github.com/j3ansimas/ignite-feed'
+        }
+      ]
+    }
+  }
+]
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -18,19 +64,16 @@ function App() {
           <Sidebar />
         </aside>
         <main>
-          <Post 
-            author="Diego Fernandes"
-            content="Qui ea anim excepteur et. Commodo sint minim mollit consequat laboris labore esse qui nulla deserunt elit. Voluptate aute velit consectetur voluptate ut cupidatat ut et dolor quis. Magna aliqua est sunt magna laborum. Non fugiat sunt dolore qui nisi mollit ullamco ad dolore deserunt. Et exercitation ex proident ullamco mollit duis dolor do aliqua nostrud."
-          />
-          <Post 
-            author="Diego Fernandes"
-            content="Qui ea anim excepteur et. Commodo sint minim mollit consequat laboris labore esse qui nulla deserunt elit. Voluptate aute velit consectetur voluptate ut cupidatat ut et dolor quis. Magna aliqua est sunt magna laborum. Non fugiat sunt dolore qui nisi mollit ullamco ad dolore deserunt. Et exercitation ex proident ullamco mollit duis dolor do aliqua nostrud."
-          />
-          <Post 
-            author="Diego Fernandes"
-            content="Qui ea anim excepteur et. Commodo sint minim mollit consequat laboris labore esse qui nulla deserunt elit. Voluptate aute velit consectetur voluptate ut cupidatat ut et dolor quis. Magna aliqua est sunt magna laborum. Non fugiat sunt dolore qui nisi mollit ullamco ad dolore deserunt. Et exercitation ex proident ullamco mollit duis dolor do aliqua nostrud."
-          />
-
+          {
+            posts.map(post => (
+              <Post 
+                author={post.author} 
+                publishedAt={post.publishedAt} 
+                post={post.post} 
+                key={post.id.toString()}
+              />
+            ))
+          }
         </main>
       </div>
     </div>
