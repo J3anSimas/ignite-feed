@@ -1,3 +1,4 @@
+import Avatar from '../Avatar/Avatar.component'
 import { Comment } from '../Comment/Comment.component'
 import styles from './Post.module.css'
 
@@ -10,7 +11,7 @@ export default function Post({ author, content }: Props) {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <img src="https://github.com/j3ansimas.png" alt="" className={styles.avatar} />
+          <Avatar url="https://github.com/j3ansimas.png" />
           <div className={styles.authorInfo}>
             <strong>Jean Simas</strong>
             <span>Web Developer</span>
