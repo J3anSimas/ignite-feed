@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Header from './components/Header/Header.component'
 import Post from './components/Post/Post.component'
 import './global.css'
@@ -6,23 +5,22 @@ import './global.css'
 import styles from './App.module.css'
 import Sidebar from './components/Sidebar/Sidebar.component'
 
-type Post= {
+interface PostType {
   id: Number
   author: {
     avatarUrl: string
     name: string
     role: string
-  },
+  }
   publishedAt: Date
   post: {
-    content: {
+    content: Array<{
       type: string
       content: string
-    }[]
-    
+    }>
   }
 }
-const posts: Post[] = [
+const posts: PostType[] = [
   {
     id: 1,
     author: {
@@ -41,7 +39,8 @@ const posts: Post[] = [
         },
         {
           type: 'paragraph',
-          content: 'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'
+          content:
+            'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'
         },
         {
           type: 'link',
@@ -52,11 +51,9 @@ const posts: Post[] = [
   }
 ]
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function App(): JSX.Element {
   return (
-    <div >
+    <div>
       <Header />
 
       <div className={styles.wrapper}>
@@ -64,16 +61,14 @@ function App() {
           <Sidebar />
         </aside>
         <main>
-          {
-            posts.map(post => (
-              <Post 
-                author={post.author} 
-                publishedAt={post.publishedAt} 
-                post={post.post} 
-                key={post.id.toString()}
-              />
-            ))
-          }
+          {posts.map((post) => (
+            <Post
+              author={post.author}
+              publishedAt={post.publishedAt}
+              post={post.post}
+              key={post.id.toString()}
+            />
+          ))}
         </main>
       </div>
     </div>

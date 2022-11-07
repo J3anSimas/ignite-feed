@@ -1,11 +1,19 @@
 import styles from './Avatar.module.css'
 
-type AvatarProps = {
-    url: string
-    hasBorder?: boolean
+interface AvatarProps {
+  url: string
+  hasBorder?: boolean
 }
-export default function Avatar({url, hasBorder = true}: AvatarProps) {
+export default function Avatar({
+  url,
+  hasBorder = true
+}: AvatarProps): JSX.Element {
   return (
-    <img src={url}  className={hasBorder? styles.avatarWithBorder : styles.avatarWithoutBorder} />
+    <img
+      src={url}
+      className={
+        hasBorder ? styles.avatarWithBorder : styles.avatarWithoutBorder
+      }
+    />
   )
 }
