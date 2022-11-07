@@ -1,5 +1,7 @@
 import { format, formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import {v4} from 'uuid'
+import React, { useState } from 'react'
 
 import Avatar from '../Avatar/Avatar.component'
 import { Comment } from '../Comment/Comment.component'
@@ -19,7 +21,49 @@ type PostProps = {
     }[]
   }   
 }
+
+type Comment = {
+  id: string,
+  author: {
+    avatarLink: string
+    name: string
+  },
+  content: string,
+  publishedAt: Date,
+  applause: Number
+}
 export default function Post({ author, post, publishedAt }: PostProps) {
+  const [comments, setComments] = useState<Comment[]>([
+    {
+      id: v4(),
+      author: {
+        avatarLink: 'https://github.com/j3ansimas.png',
+        name: 'Jean Simas'
+      },
+      content: 'Muito bom maninho',
+      publishedAt: new Date(),
+      applause: 25
+    },{
+      id: v4(),
+      author: {
+        avatarLink: 'https://github.com/j3ansimas.png',
+        name: 'Jean Simas'
+      },
+      content: 'Muito bom maninho',
+      publishedAt: new Date(),
+      applause: 25
+    },{
+      id: v4(),
+      author: {
+        avatarLink: 'https://github.com/j3ansimas.png',
+        name: 'Jean Simas'
+      },
+      content: 'Muito bom maninho',
+      publishedAt: new Date(),
+      applause: 25
+    }
+  ])
+  const [newCommentText, setNewCommentText] = useState('')
   const publishedAtFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'",{
     locale: ptBR
   })
@@ -28,6 +72,36 @@ export default function Post({ author, post, publishedAt }: PostProps) {
     locale: ptBR,
     addSuffix: true
   })
+
+
+  function handleNewComment(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setComments([...comments, {
+      id: v4(),
+      author: {
+        avatarLink: 'https://github.com/diego3g.png',
+        name: 'Diego Rocket'
+      },
+      content: newCommentText,
+      publishedAt: new Date(),
+      applause: 0
+    }])
+    setNewCommentText('')
+  }
+
+  function deleteComment(comment: string) {
+    setComments(comments.filter(com => com.id !== comment))
+  }
+
+  function Applaud(comment: string) {
+    setComments(comments.map(com => {
+      if(com.id === comment) {
+
+        com.applause = Number(com.applause) + 1
+      }
+      return com
+    }))
+  }
 
   return (
     <article className={styles.post}>
@@ -53,17 +127,39 @@ export default function Post({ author, post, publishedAt }: PostProps) {
         }
       </div>
 
-      <form className={styles.commentForm}>
+      <form className={styles.commentForm} onSubmit={handleNewComment}>
         <strong>Deixe seu feedback</strong>
-        <textarea placeholder="Deixe um comentário"/>
+        <textarea 
+          placeholder="Deixe um comentário" 
+          value={newCommentText}
+          onChange={e => setNewCommentText(e.target.value)}
+          required
+        
+        />
+
+
         <footer>
-          <button type="submit">Publicar</button>
+          <button 
+            type="submit" 
+            disabled={newCommentText === ''}
+          >Publicar</button>
         </footer>
       </form>
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
+       { 
+       comments.map(({id, applause, author, content, publishedAt}) => (
+        <Comment 
+          id={id}
+          applause={applause} 
+          author={author}
+          content={content}
+          publishedAt={publishedAt}
 
+          onDeleteComment={deleteComment}
+          onApplaud={Applaud}
+        />
+       ))
+       }
       </div>
     </article>
   )
